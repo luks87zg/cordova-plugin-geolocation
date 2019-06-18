@@ -60,6 +60,13 @@
     __locationStarted = NO;
     __highAccuracyEnabled = NO;
     self.locationData = nil;
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8) {
+        [self.locationManager requestAlwaysAuthorization];
+    }
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9) {
+        self.locationManager.allowsBackgroundLocationUpdates = YES;
+    }
+    self.locationManager.pausesLocationUpdatesAutomatically = NO;
 }
 
 - (BOOL)isAuthorized

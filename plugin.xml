@@ -18,105 +18,121 @@
   under the License.
 -->
 
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-xmlns:rim="http://www.blackberry.com/ns/widgets"
-xmlns:android="http://schemas.android.com/apk/res/android"
-           id="cordova-plugin-geolocation"
-      version="4.0.2-dev">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" 
+  xmlns:rim="http://www.blackberry.com/ns/widgets" 
+  xmlns:android="http://schemas.android.com/apk/res/android" id="cordova-plugin-geolocation" version="4.0.2-dev">
 
-    <name>Geolocation</name>
-    <description>Cordova Geolocation Plugin</description>
-    <license>Apache 2.0</license>
-    <keywords>cordova,geolocation</keywords>
-    <repo>https://git-wip-us.apache.org/repos/asf/cordova-plugin-geolocation.git</repo>
-    <issue>https://issues.apache.org/jira/browse/CB/component/12320638</issue>
+  <name>Geolocation</name>
+  <description>Cordova Geolocation Plugin</description>
+  <license>Apache 2.0</license>
+  <keywords>cordova,geolocation</keywords>
+  <repo>https://git-wip-us.apache.org/repos/asf/cordova-plugin-geolocation.git</repo>
+  <issue>https://issues.apache.org/jira/browse/CB/component/12320638</issue>
 
-    <engines>
-        <engine name="cordova-android" version=">=6.3.0" />
-    </engines>
+  <engines>
+    <engine name="cordova-android" version=">=6.3.0" />
+  </engines>
 
-    <!-- android -->
-    <platform name="android">
+  <!-- android -->
+  <platform name="android">
 
-        <config-file target="AndroidManifest.xml" parent="/*">
-            <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-            <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-            <uses-feature android:name="android.hardware.location.gps" />
-        </config-file>
+    <config-file target="AndroidManifest.xml" parent="/*">
+      <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+      <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+      <uses-feature android:name="android.hardware.location.gps" />
+    </config-file>
 
-        <config-file target="res/xml/config.xml" parent="/*">
-          <feature name="Geolocation">
-              <param name="android-package" value="org.apache.cordova.geolocation.Geolocation" />
-          </feature>
-        </config-file>
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="Geolocation">
+        <param name="android-package" value="org.apache.cordova.geolocation.Geolocation" />
+      </feature>
+    </config-file>
 
-        <source-file src="src/android/Geolocation.java" target-dir="src/org/apache/cordova/geolocation/" />
+    <source-file src="src/android/Geolocation.java" target-dir="src/org/apache/cordova/geolocation/" />
 
-        <js-module src="www/android/geolocation.js" name="geolocation">
-            <clobbers target="navigator.geolocation" />
-        </js-module>
+    <js-module src="www/android/geolocation.js" name="geolocation">
+      <clobbers target="navigator.geolocation" />
+    </js-module>
 
-        <!-- We don't expose PositionError via clobber on Android as we use it internally only -->
-        <js-module src="www/PositionError.js" name="PositionError">
-            <runs />
-        </js-module>
+    <!-- We don't expose PositionError via clobber on Android as we use it internally only -->
+    <js-module src="www/PositionError.js" name="PositionError">
+      <runs />
+    </js-module>
 
-    </platform>
+  </platform>
 
-    <!-- ios -->
-    <platform name="ios">
+  <!-- ios -->
+  <platform name="ios">
 
-        <js-module src="www/Coordinates.js" name="Coordinates">
-            <clobbers target="Coordinates" />
-        </js-module>
+    <js-module src="www/Coordinates.js" name="Coordinates">
+      <clobbers target="Coordinates" />
+    </js-module>
 
-        <js-module src="www/PositionError.js" name="PositionError">
-            <clobbers target="PositionError" />
-        </js-module>
+    <js-module src="www/PositionError.js" name="PositionError">
+      <clobbers target="PositionError" />
+    </js-module>
 
-        <js-module src="www/Position.js" name="Position">
-            <clobbers target="Position" />
-        </js-module>
+    <js-module src="www/Position.js" name="Position">
+      <clobbers target="Position" />
+    </js-module>
 
-        <js-module src="www/geolocation.js" name="geolocation">
-            <clobbers target="navigator.geolocation" />
-        </js-module>
+    <js-module src="www/geolocation.js" name="geolocation">
+      <clobbers target="navigator.geolocation" />
+    </js-module>
 
-        <config-file target="config.xml" parent="/*">
-                <feature name="Geolocation">
-                    <param name="ios-package" value="CDVLocation"/>
-                </feature>
-        </config-file>
-        <header-file src="src/ios/CDVLocation.h" />
-        <source-file src="src/ios/CDVLocation.m" />
-        <framework src="CoreLocation.framework" />
+    <config-file target="config.xml" parent="/*">
+      <feature name="Geolocation">
+        <param name="ios-package" value="CDVLocation"/>
+      </feature>
+    </config-file>
+    <header-file src="src/ios/CDVLocation.h" />
+    <source-file src="src/ios/CDVLocation.m" />
+    <framework src="CoreLocation.framework" />
 
-    </platform>
+    <config-file target="*-Info.plist" parent="NSLocationWhenInUseUsageDescription">
+      <string>Diese App benötigt zum Tracken der Position den Zugriff auf die Standortdaten.</string>
+    </config-file>
 
-    <!-- windows universal apps (Windows 8.1, Windows Phone 8.1, Windows 8.0) -->
-    <platform name="windows">
-        <config-file target="package.appxmanifest" parent="/Package/Capabilities">
-            <DeviceCapability Name="location" />
-        </config-file>
+    <config-file target="*-Info.plist" parent="NSLocationAlwaysUsageDescription">      <!-- deprecated for iOS11 - still in use for iOS <= 10 -->
+      <string>Diese App benötigt zum Tracken der Position den Zugriff auf die Standortdaten auch im Hintergrundmodus.</string>
+    </config-file>
 
-        <js-module src="src/windows/GeolocationProxy.js" name="GeolocationProxy">
-            <runs />
-        </js-module>
+    <config-file target="*-Info.plist" parent="NSLocationAlwaysAndWhenInUseUsageDescription">      <!-- for iOS 11 -->
+      <string>Diese App benötigt zum Tracken der Position den Zugriff auf die Standortdaten (Vordergrund- und Hintergrundmodus).</string>
+    </config-file>
 
-        <js-module src="www/Coordinates.js" name="Coordinates">
-            <clobbers target="Coordinates" />
-        </js-module>
+    <config-file target="*-Info.plist" parent="UIBackgroundModes">
+      <array>
+        <string>location</string>
+      </array>
+    </config-file>
 
-        <js-module src="www/PositionError.js" name="PositionError">
-            <clobbers target="PositionError" />
-        </js-module>
+  </platform>
 
-        <js-module src="www/Position.js" name="Position">
-            <clobbers target="Position" />
-        </js-module>
+  <!-- windows universal apps (Windows 8.1, Windows Phone 8.1, Windows 8.0) -->
+  <platform name="windows">
+    <config-file target="package.appxmanifest" parent="/Package/Capabilities">
+      <DeviceCapability Name="location" />
+    </config-file>
 
-        <js-module src="www/geolocation.js" name="geolocation">
-            <clobbers target="navigator.geolocation" />
-        </js-module>
-    </platform>
+    <js-module src="src/windows/GeolocationProxy.js" name="GeolocationProxy">
+      <runs />
+    </js-module>
+
+    <js-module src="www/Coordinates.js" name="Coordinates">
+      <clobbers target="Coordinates" />
+    </js-module>
+
+    <js-module src="www/PositionError.js" name="PositionError">
+      <clobbers target="PositionError" />
+    </js-module>
+
+    <js-module src="www/Position.js" name="Position">
+      <clobbers target="Position" />
+    </js-module>
+
+    <js-module src="www/geolocation.js" name="geolocation">
+      <clobbers target="navigator.geolocation" />
+    </js-module>
+  </platform>
 </plugin>
